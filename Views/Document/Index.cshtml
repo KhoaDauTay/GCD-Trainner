@@ -1,0 +1,21 @@
+@model List<Document>
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<button type="button"><a asp-controller="Document" asp-action="Create">Create</a></button>
+
+@{
+    foreach (var document in Model)
+    {
+        <div class="card">
+          <img src="@document.Image" alt="Avatar" style="width:300px;height: 300px">
+          <div class="container">
+            <h4><b><a asp-action="Detail" asp-route-id="@document.Id">@document.Name</a></b></h4>
+            <p>@document.Author</p>
+          </div>
+        </div>
+    }
+}

@@ -17,7 +17,28 @@ public class DocumentController : Controller
     // GET
     public IActionResult Index()
     {
-        return Content("Khoa");
+        var documents = _db.Documents.ToList();  // SELECT * FROM DOCUMENTS
+        return View(documents);
+    }
+    
+    public IActionResult Detail(string id)
+    {
+        int documentId = Int32.Parse(id);
+        var documents = _db.Documents.Find(documentId);
+        return View(documents);
+    }
+    public IActionResult Delete(string id)
+    {
+        int documentId = Int32.Parse(id);
+        var documents = _db.Documents.Find(documentId);
+        if (documents != null)
+        {
+            _db.Documents.Remove(documents);
+            _db.SaveChanges();
+            return RedirectToAction("Index");
+        }
+        // Noti
+        return RedirectToAction("Index");
     }
     
     [HttpGet]
@@ -40,6 +61,39 @@ public class DocumentController : Controller
         };
         var savedDocument = _db.Documents.Add(newDocument);
         _db.SaveChanges();
-        return Content("Success");
+        return RedirectToAction("Index");
+    }
+
+    [HttpGet]
+    public IActionResult Update(string id)
+    {
+        int documentId = Int32.Parse(id);
+        var documents = _db.Documents.Find(documentId);
+        DocumentUpdate formDocument = new DocumentUpdate()
+        {
+            Id = documents.Id,
+            Author = documents.Author,
+            Image = documents.Image,
+            Name = documents.Name,
+            Price = documents.Price,
+            Summary = documents.Summary
+        };
+        return View(formDocument);
+    }
+    
+    [HttpPost]
+    public IActionResult Update(DocumentUpdate documentUpdate)
+    {
+ 
+        var document = _db.Documents.Find(documentUpdate.Id);
+        document.Author = documentUpdate.Author;
+        document.Name = documentUpdate.Name;
+        document.Image = documentUpdate.Image;
+        document.Summary = documentUpdate.Summary;
+        document.Price = documentUpdate.Price;
+        document.UpdateDate = DateTime.Now;
+        _db.SaveChanges();
+        string docId = $"{documentUpdate.Id}";
+        return RedirectToAction("Detail", new { id = docId });
     }
 }

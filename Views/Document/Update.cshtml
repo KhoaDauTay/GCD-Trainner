@@ -1,0 +1,21 @@
+@model web_app_gcd.ViewModels.DocumentUpdate
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<h2>Form create Document</h2>
+<form asp-action="Update" method="post">
+    <label asp-for="Name">Name</label>
+    <input type="text" asp-for="Name" value="@Model.Name">
+    <label asp-for="Author">Author</label>
+    <input type="text" asp-for="Author" value="@Model.Author">
+    <label asp-for="Image">Image</label>
+    <input type="text" asp-for="Image" value="@Model.Image">
+    <label asp-for="Summary">Summary</label>
+    <input type="text" asp-for="Summary" value="@Model.Summary">
+    <label asp-for="Price">Summary</label>
+    <input type="text" asp-for="Price" value="@Model.Price">
+    <button type="submit">Save</button>
+</form>

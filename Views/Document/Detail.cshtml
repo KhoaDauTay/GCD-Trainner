@@ -1,0 +1,23 @@
+@model Document
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<button type="button"><a asp-action="Index">Back</a></button>
+<button type="button"><a asp-action="Delete" asp-route-id="@Model.Id">Delete</a></button>
+<button type="button"><a asp-action="Update" asp-route-id="@Model.Id">Update</a></button>
+@{
+        <div class="card">
+          <img src="@Model.Image" alt="Avatar" style="width:300px;height: 300px">
+          <div class="container">
+            <h4><b><a>@Model.Name</a></b></h4>
+            <h5><b><a>@Model.Id</a></b></h5>
+            <p>@Model.Author</p>
+            <p>@Model.Price</p>
+            <p>@Model.Summary</p>
+            <p>@Model.CreatedAt</p>
+          </div>
+        </div>
+}
