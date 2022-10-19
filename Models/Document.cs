@@ -9,7 +9,8 @@ public class Document
     public string Summary { get; set; }
     public DateTime UpdateDate { get; set; } // Ko hien thi form
     public int Price { get; set; } // // Ko hien thi form
-
+    
+    public List<Chapter>? Chapters { get; set; }
     public DateTime CreatedAt { get; set; }
 
     public Document()

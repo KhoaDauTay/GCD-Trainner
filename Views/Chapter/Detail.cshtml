@@ -1,0 +1,26 @@
+@model ChapterDetail
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg">
+            <h2>Document title: @Model.Chapter.Document.Name</h2>
+            <h2>Document title: @Model.Chapter.Document.Author</h2>
+            <p>Content: @Model.Chapter.Content</p>
+        </div>
+        <div class="col-sm">
+            <ul>
+                <h2>List chapter</h2>
+                @foreach (var chapter in @Model.Chapters)
+                {
+                    <li><a asp-action="Detail" asp-route-id="@chapter.Id">Chapter: @chapter.Id</a></li>
+                }
+            </ul>
+        </div>
+    </div>
+</div>

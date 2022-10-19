@@ -1,0 +1,14 @@
+@model web_app_gcd.ViewModels.ChapterCreate
+
+@{
+    ViewBag.Title = "title";
+    Layout = "_Layout";
+}
+
+<h2>Form create Chapter</h2>
+<form asp-action="Create" method="post">
+    <label asp-for="Content">Content</label>
+    <input type="text" asp-for="Content">
+    <input type="text" hidden="hidden" asp-for="DocumentId" value="@Model.DocumentId">
+    <button type="submit">Save</button>
+</form>

@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using web_app_gcd.Data;
 using web_app_gcd.Models;
 using web_app_gcd.ViewModels;
@@ -13,20 +14,38 @@ public class DocumentController : Controller
     {
         _db = db;
     }
-    
+
     // GET
     public IActionResult Index()
     {
-        var documents = _db.Documents.ToList();  // SELECT * FROM DOCUMENTS
+        var documents = _db.Documents.ToList(); // SELECT * FROM DOCUMENTS
         return View(documents);
     }
-    
+
     public IActionResult Detail(string id)
     {
         int documentId = Int32.Parse(id);
         var documents = _db.Documents.Find(documentId);
+        if (documents == null)
+        {
+            return Content("No find document");
+        }
+        var chapters = _db.Chapters
+            .FirstOrDefault(c => c.DocumentId == documentId);
+        if (chapters == null)
+        {
+            documents.Chapters = null;
+        }
+        else
+        {
+            documents.Chapters = new List<Chapter>()
+            {
+                chapters
+            };
+        }
         return View(documents);
     }
+
     public IActionResult Delete(string id)
     {
         int documentId = Int32.Parse(id);
@@ -37,16 +56,16 @@ public class DocumentController : Controller
             _db.SaveChanges();
             return RedirectToAction("Index");
         }
-        // Noti
         return RedirectToAction("Index");
     }
-    
+
     [HttpGet]
     public IActionResult Create()
     {
         DocumentCreate formDocument = new DocumentCreate();
         return View(formDocument);
     }
+
     [HttpPost]
     public IActionResult Create(DocumentCreate document)
     {
@@ -80,11 +99,10 @@ public class DocumentController : Controller
         };
         return View(formDocument);
     }
-    
+
     [HttpPost]
     public IActionResult Update(DocumentUpdate documentUpdate)
     {
- 
         var document = _db.Documents.Find(documentUpdate.Id);
         document.Author = documentUpdate.Author;
         document.Name = documentUpdate.Name;
