@@ -1,3 +1,4 @@
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using web_app_gcd.Data;
@@ -6,6 +7,7 @@ using web_app_gcd.ViewModels;
 
 namespace web_app_gcd.Controllers;
 
+[Authorize]
 public class DocumentController : Controller
 {
     private ApplicationDbContext _db;

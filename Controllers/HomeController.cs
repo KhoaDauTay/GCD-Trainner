@@ -1,5 +1,6 @@
 ﻿using System.Diagnostics;
 using Microsoft.AspNetCore.Mvc;
+using web_app_gcd.Data;
 using web_app_gcd.Models;
 
 namespace web_app_gcd.Controllers;
@@ -7,15 +8,17 @@ namespace web_app_gcd.Controllers;
 public class HomeController : Controller
 {
     private readonly ILogger<HomeController> _logger;
-
-    public HomeController(ILogger<HomeController> logger)
+    private readonly ApplicationDbContext _db;
+    public HomeController(ILogger<HomeController> logger, ApplicationDbContext db)
     {
         _logger = logger;
+        _db = db;
     }
 
     public IActionResult Index()
     {
-        return View();
+        List<Document> documents = _db.Documents.ToList();
+        return View(documents);
     }
 
     public IActionResult Privacy()
