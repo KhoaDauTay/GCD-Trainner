@@ -1,3 +1,6 @@
+using System.ComponentModel.DataAnnotations;
+using Microsoft.AspNetCore.Mvc;
+
 namespace web_app_gcd.Models;
 
 public class Document

@@ -1,21 +1,128 @@
 @model List<Document>
 
 @{
-    ViewBag.Title = "title";
-    Layout = "_Layout";
+    ViewBag.Title = "Document index";
+    Layout = "_DashboardLayout";
 }
-
-<button type="button"><a asp-controller="Document" asp-action="Create">Create</a></button>
-
-@{
-    foreach (var document in Model)
-    {
-        <div class="card">
-          <img src="@document.Image" alt="Avatar" style="width:300px;height: 300px">
-          <div class="container">
-            <h4><b><a asp-action="Detail" asp-route-id="@document.Id">@document.Name</a></b></h4>
-            <p>@document.Author</p>
-          </div>
+@section Header {
+    <partial name="_NavHeader"/>
+}
+<div class="container-fluid">
+    <h3 class="text-dark mb-4">Documents</h3>
+    <div class="card-header py-3 ">
+        <button type="button" class="btn btn-info">
+            <a class="text-primary m-0 font-weight-bold" asp-controller="Document" asp-action="Create">Create</a>
+        </button>
+    </div>
+    <div class="card shadow">
+        <div class="card-header py-3">
+            <p class="text-primary m-0 font-weight-bold">List document</p>
         </div>
-    }
-}
+        <div class="card-body">
+            <div class="row">
+                <div class="col-md-6 text-nowrap">
+                    <div id="dataTable_length" class="dataTables_length" aria-controls="dataTable">
+                        <label>
+                            Show&nbsp;
+                            <select class="form-control form-control-sm custom-select custom-select-sm">
+                                <option value="1" selected="">1</option>
+                                <option value="5">5</option>
+                                <option value="10">10</option>
+                            </select>&nbsp;
+                        </label>
+                    </div>
+                </div>
+                <div class="col-md-6">
+                    <div class="text-md-right dataTables_filter" id="dataTable_filter">
+                        <label>
+                            <input type="search" class="form-control form-control-sm" aria-controls="dataTable" placeholder="Search">
+                        </label>
+                    </div>
+                </div>
+            </div>
+            <div class="table-responsive table mt-2" id="dataTable" role="grid" aria-describedby="dataTable_info">
+                <table class="table my-0" id="dataTable">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Id</th>
+                        <th>Author</th>
+                        <th>Price</th>
+                        <th>UpdateDate</th>
+                        <th>CreatedAt</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    @{
+                        foreach (var document in Model)
+                        {
+                            <tr>
+                                <td><img class="rounded-circle mr-2" width="30" height="30" src="@document.Image">@document.Name</td>
+                                <td>@document.Id</td>
+                                <td>@document.Author</td>
+                                <td>@document.Price</td>
+                                <td>@document.CreatedAt</td>
+                                <td>@document.UpdateDate</td>
+                            </tr>
+                        }
+                        
+                    }
+
+                    </tbody>
+                    <tfoot>
+                    <tr>
+                        <td>
+                            <strong>Name</strong>
+                        </td>
+                        <td>
+                            <strong>Position</strong>
+                        </td>
+                        <td>
+                            <strong>Office</strong>
+                        </td>
+                        <td>
+                            <strong>Age</strong>
+                        </td>
+                        <td>
+                            <strong>Start date</strong>
+                        </td>
+                        <td>
+                            <strong>Salary</strong>
+                        </td>
+                    </tr>
+                    </tfoot>
+                </table>
+            </div>
+            <div class="row">
+                <div class="col-md-6 align-self-center">
+                    <p id="dataTable_info" class="dataTables_info" role="status" aria-live="polite">Showing 1 to 10 of 27</p>
+                </div>
+                <div class="col-md-6">
+                    <nav class="d-lg-flex justify-content-lg-end dataTables_paginate paging_simple_numbers">
+                        <ul class="pagination">
+                            <li class="page-item disabled">
+                                <a class="page-link" href="#" aria-label="Previous">
+                                    <span aria-hidden="true">«</span>
+                                </a>
+                            </li>
+                            <li class="page-item active">
+                                <a class="page-link" href="#">1</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="#">2</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="#">3</a>
+                            </li>
+                            <li class="page-item">
+                                <a class="page-link" href="#" aria-label="Next">
+                                    <span aria-hidden="true">»</span>
+                                </a>
+                            </li>
+                        </ul>
+                    </nav>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

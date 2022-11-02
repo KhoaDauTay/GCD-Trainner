@@ -69,20 +69,27 @@ public class DocumentController : Controller
     }
 
     [HttpPost]
+    [ValidateAntiForgeryToken]
     public IActionResult Create(DocumentCreate document)
     {
-        Document newDocument = new Document()
+        if (ModelState.IsValid)
         {
-            Author = document.Author,
-            Image = document.Image,
-            Name = document.Name,
-            Summary = document.Summary,
-            Price = 20,
-            UpdateDate = DateTime.Now
-        };
-        var savedDocument = _db.Documents.Add(newDocument);
-        _db.SaveChanges();
-        return RedirectToAction("Index");
+            Document newDocument = new Document()
+            {
+                Author = document.Author,
+                Image = document.Image,
+                Name = document.Name,
+                Summary = document.Summary,
+                Price = 20,
+                UpdateDate = DateTime.Now
+            };
+            var savedDocument = _db.Documents.Add(newDocument);
+            _db.SaveChanges();
+            TempData["SUCCESS"] = "Document created successfully";
+            return RedirectToAction("Index");
+        }
+        TempData["ERROR"] = "Document submit is invalid";
+        return RedirectToAction("Create");
     }
 
     [HttpGet]
