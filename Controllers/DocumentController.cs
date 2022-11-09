@@ -32,19 +32,8 @@ public class DocumentController : Controller
         {
             return Content("No find document");
         }
-        var chapters = _db.Chapters
-            .FirstOrDefault(c => c.DocumentId == documentId);
-        if (chapters == null)
-        {
-            documents.Chapters = null;
-        }
-        else
-        {
-            documents.Chapters = new List<Chapter>()
-            {
-                chapters
-            };
-        }
+        var chapters = _db.Chapters.Where(c => c.DocumentId == documentId).ToList();
+        documents.Chapters = chapters;
         return View(documents);
     }
 

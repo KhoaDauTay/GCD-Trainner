@@ -8,15 +8,27 @@
 <button type="button">
     <a asp-action="Index">Back</a>
 </button>
-<button type="button">
-    <a asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
-</button>
-<button type="button">
-    <a asp-action="Update" asp-route-id="@Model.Id">Update</a>
-</button>
-<button type="button">
-    <a asp-controller="Chapter" asp-action="Create" asp-route-id="@Model.Id">Create chapter</a>
-</button>
+@{
+    if (User.IsInRole(RoleApp.Staff))
+    {
+        <button type="button">
+            <a asp-action="Delete" asp-route-id="@Model.Id">Delete</a>
+        </button>
+        <button type="button">
+            <a asp-action="Update" asp-route-id="@Model.Id">Update</a>
+        </button>
+        <button type="button">
+            <a asp-controller="Chapter" asp-action="Create" asp-route-id="@Model.Id">Create chapter</a>
+        </button>
+    }
+    else
+    {
+        <button type="button">
+            <a asp-controller="Chapter" asp-action="Create" asp-route-id="@Model.Id">Request documentr</a>
+        </button>
+    }
+}
+
 @{
     <div class="card">
         <img src="@Model.Image" alt="Avatar" style="width:300px;height: 300px">

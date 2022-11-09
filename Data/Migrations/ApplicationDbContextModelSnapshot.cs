@@ -15,7 +15,7 @@ namespace web_app_gcd.Data.Migrations
         protected override void BuildModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
-            modelBuilder.HasAnnotation("ProductVersion", "6.0.9");
+            modelBuilder.HasAnnotation("ProductVersion", "6.0.10");
 
             modelBuilder.Entity("Microsoft.AspNetCore.Identity.IdentityRole", b =>
                 {
@@ -219,6 +219,35 @@ namespace web_app_gcd.Data.Migrations
                     b.ToTable("AspNetUserTokens", (string)null);
                 });
 
+            modelBuilder.Entity("web_app_gcd.Models.Access", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("DocumentId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<DateTime>("ExpDate")
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("Status")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.Property<string>("UserId")
+                        .IsRequired()
+                        .HasColumnType("TEXT");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("DocumentId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Accesses");
+                });
+
             modelBuilder.Entity("web_app_gcd.Models.Category", b =>
                 {
                     b.Property<int>("Id")
@@ -245,6 +274,9 @@ namespace web_app_gcd.Data.Migrations
                         .HasColumnType("TEXT");
 
                     b.Property<int>("DocumentId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<bool>("IsFree")
                         .HasColumnType("INTEGER");
 
                     b.HasKey("Id");
@@ -373,10 +405,29 @@ namespace web_app_gcd.Data.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("web_app_gcd.Models.Chapter", b =>
+            modelBuilder.Entity("web_app_gcd.Models.Access", b =>
                 {
                     b.HasOne("web_app_gcd.Models.Document", "Document")
                         .WithMany()
+                        .HasForeignKey("DocumentId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.HasOne("web_app_gcd.Models.ApplicationUser", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId")
+                        .OnDelete(DeleteBehavior.Cascade)
+                        .IsRequired();
+
+                    b.Navigation("Document");
+
+                    b.Navigation("User");
+                });
+
+            modelBuilder.Entity("web_app_gcd.Models.Chapter", b =>
+                {
+                    b.HasOne("web_app_gcd.Models.Document", "Document")
+                        .WithMany("Chapters")
                         .HasForeignKey("DocumentId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
@@ -401,6 +452,11 @@ namespace web_app_gcd.Data.Migrations
                     b.Navigation("Chapter");
 
                     b.Navigation("Document");
+                });
+
+            modelBuilder.Entity("web_app_gcd.Models.Document", b =>
+                {
+                    b.Navigation("Chapters");
                 });
 #pragma warning restore 612, 618
         }

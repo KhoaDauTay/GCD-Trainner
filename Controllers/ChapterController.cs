@@ -1,3 +1,5 @@
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using web_app_gcd.Data;
@@ -6,12 +8,15 @@ using web_app_gcd.ViewModels;
 
 namespace web_app_gcd.Controllers;
 
+[Authorize]
 public class ChapterController : Controller
 {
     private readonly ApplicationDbContext _db;
+    private readonly UserManager<ApplicationUser> _userManager;
 
-    public ChapterController(ApplicationDbContext db)
+    public ChapterController(ApplicationDbContext db, UserManager<ApplicationUser> userManager)
     {
+        _userManager = userManager;
         _db = db;
     }
     // GET
@@ -63,9 +68,19 @@ public class ChapterController : Controller
                 Chapter = chapter,
                 Chapters = chapterRelated
             };
+            if (chapter.IsFree)
+            {
+                return View(chapterDetail);
+            }
 
+            var userId = _userManager.GetUserId(HttpContext.User);
+            var allowAccess = _db.Accesses.FirstOrDefault(a => a.DocumentId == chapter.DocumentId && a.UserId == userId);
+            if (allowAccess != null && allowAccess.ExpDate > DateTime.Now)
+            {
+                return View(chapterDetail);
+            }
+            return Content("You deo dc coi");
 
-            return View(chapterDetail);
         }
         return Content("Not find chapter");
     }

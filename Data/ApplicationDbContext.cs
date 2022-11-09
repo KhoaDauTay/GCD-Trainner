@@ -16,6 +16,7 @@ public class ApplicationDbContext : IdentityDbContext
     public virtual DbSet<Chapter> Chapters { get; set; }
     public virtual DbSet<Category> Categories { get; set; }
     public virtual DbSet<DocumentCategory> DocumentCategories { get; set; }
+    public virtual DbSet<Access> Accesses { get; set; }
     
 }
 
